@@ -1,0 +1,44 @@
+﻿@using Data 
+
+<table>
+    <tr>
+        <th>@GetTitleHeading()</th>
+        <th>@GetValueHeading()</th>
+    </tr>
+    @foreach (var section in tableData.sections)
+    {
+            <TableSection sectionData="section"/>
+    }
+
+
+    <tr></tr>
+    </table>
+
+@code {
+    [Parameter]
+    public TableData? tableData { get; set; }
+
+    private String GetTitleHeading() {
+        if (tableData == null)
+        {
+            return String.Empty;
+        }
+        else
+        {
+            return tableData.heading.titleHeading;
+        }
+    }
+
+    private String GetValueHeading()
+    {
+        if (tableData == null)
+        {
+            return String.Empty;
+        }
+        else
+        {
+            return tableData.heading.valueHeading;
+        }
+    }
+    }
+

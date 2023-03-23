@@ -1,10 +1,29 @@
 ﻿@page "/"
+@using MidcoNetWorth.Data
 
-<PageTitle>Index</PageTitle>
+<PageTitle>Net Worth Calculator</PageTitle>
 
-<h1>Hello, world!</h1>
+<h1>Midco Net Worth Calculator</h1>
 
-Welcome to your new app.
+<Table tableData="assetsTable"/>
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+
+@code {
+    public TableData assetsTable = new TableData(
+            new TableHeading("Assets", "Current Value"),
+            new List<TableSectionData>()
+            {
+                new TableSectionData("Cash and cash equivalents")
+            }
+        );
+
+    TableData liabilitiesTable = new TableData(
+            new TableHeading("Liabilities", "Current amount due"),
+            new List<TableSectionData>()
+            {
+                new TableSectionData("Current"),
+                new TableSectionData("Long-term"),
+            }
+        );
+}
 
