@@ -4,10 +4,12 @@
 <PageTitle>Net Worth Calculator</PageTitle>
 
 
-<nav class="navbar navbar-dark bg-primary sticky-top px-6 mb-2">
+<nav class="navbar navbar-light sticky-top px-6 mb-2" style="background-color: #e3f2fd;">
     <div class="container">
         <span class="navbar-brand mb-0 h1">Net Worth Calculator</span>
-        <span class="navbar-text text-wrap text-break text-light">Net Worth: @netWorth</span>
+        <span class="navbar-text text-wrap text-break">
+            Net Worth: <span class=@netWorthClass>@netWorth</span>
+        </span>
     </div>
 </nav>
 
@@ -25,6 +27,9 @@
 @code {
     private NetWorthModel model = new NetWorthModel();
     private String netWorth = String.Empty;
+    private static String netWorthClassDefault = "fw-bold";
+    private static String netWorthClassNegative = "fw-bold text-danger";
+    private String netWorthClass = netWorthClassDefault;
 
     protected override void OnInitialized()
     {
@@ -35,6 +40,14 @@
     private void updateNetWorth()
     {
         Double netWorthValue = model.assets.totalValue - model.liabilities.totalValue;
+        if (netWorthValue < 0)
+        {
+            netWorthClass = netWorthClassNegative;
+        }
+        else
+        {
+            netWorthClass = netWorthClassDefault;
+        }
         netWorth = String.Format("{0:C2}", netWorthValue);
         StateHasChanged();
     }
