@@ -1,5 +1,7 @@
 ﻿using System;
-namespace NetWorth.Data
+using NetWorth.Data;
+
+namespace NetWorth.Model
 {
     public class NetWorthModel
     {
