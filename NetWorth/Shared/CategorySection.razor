@@ -1,0 +1,53 @@
+﻿@using Data
+
+@if (category != null)
+{
+    <div class="card mb-2">
+        <div class="card-header">@category.title</div>
+        @foreach (NetWorthSubcategory sub in category.subcategories)
+        {
+            <SubcategorySection subcategory=@sub
+                                onUpdate=@onSubcategoryUpdated />
+        }
+        <div class="card-footer text-end">Total: @totalValue</div>
+    </div>
+}
+else
+{
+    <div class="alert alert-danger" role="alert">
+        A category has not been defined!
+    </div>
+}
+
+@code {
+    [Parameter]
+    public NetWorthCategory? category { get; set; }
+
+    private String? totalValue { get; set; }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        updateTotal();
+    }
+
+    private void updateTotal()
+    {
+        if (category == null) { return; }
+        totalValue = String.Format("{0:C2}", category.totalValue);
+        StateHasChanged();
+    }
+
+    [Parameter]
+    public Action? onUpdate { get; set; }
+
+    private void onSubcategoryUpdated()
+    {
+        updateTotal();
+        if (onUpdate != null)
+        {
+            onUpdate.Invoke();
+        }
+    }
+}
+

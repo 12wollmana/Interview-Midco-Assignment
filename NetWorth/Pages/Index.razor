@@ -1,0 +1,42 @@
+﻿@page "/"
+@using Data
+
+<PageTitle>Net Worth Calculator</PageTitle>
+
+
+<nav class="navbar navbar-dark bg-primary sticky-top px-6 mb-2">
+    <div class="container">
+        <span class="navbar-brand mb-0 h1">Net Worth Calculator</span>
+        <span class="navbar-text text-wrap text-break text-light">Net Worth: @netWorth</span>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-lg-6">
+            <CategorySection category=@model.assets onUpdate=@updateNetWorth />
+        </div>
+        <div class="col-12 col-lg-6">
+            <CategorySection category=@model.liabilities onUpdate="@updateNetWorth" />
+        </div>
+    </div>
+</div>
+
+@code {
+    private NetWorthModel model = new NetWorthModel();
+    private String netWorth = String.Empty;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        updateNetWorth();
+    }
+
+    private void updateNetWorth()
+    {
+        Double netWorthValue = model.assets.totalValue - model.liabilities.totalValue;
+        netWorth = String.Format("{0:C2}", netWorthValue);
+        StateHasChanged();
+    }
+}
+

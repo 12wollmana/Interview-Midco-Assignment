@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
-using MidcoNetWorth.Data;
+using NetWorth.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 

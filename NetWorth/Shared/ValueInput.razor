@@ -1,0 +1,94 @@
+﻿@using Data
+@using Validation
+@using System.Globalization
+
+@if (netValue != null)
+{
+    <EditForm Model=@netValue OnSubmit="FormSubmitted">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12 col-md-6">
+                    <label class="col-form-label"
+                           for=@this.GetHashCode()>
+                        @netValue.title
+                    </label>
+                </div>
+                <div class="col-sm-12 col-md-6">
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            @NumberFormatInfo.CurrentInfo.CurrencySymbol
+                        </span>
+                        <InputNumber id=@this.GetHashCode()
+                                     class="form-control" aria-label="Amount"
+                                     @bind-Value="inputValue"
+                                     @onblur="ValidateAndUpdateValue" />
+                    </div>
+                </div>
+            </div>
+            @if (!String.IsNullOrEmpty(errorMessage))
+            {
+                <div class="row">
+                    <div class="col-12">
+                        <div class="alert alert-danger mt-2" role="alert">
+                            @errorMessage
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </EditForm>
+}
+else
+{
+    <div class="alert alert-danger" role="alert">
+        A value has not been defined!
+    </div>
+}
+
+@code {
+    [Parameter, EditorRequired]
+    public NetWorthValue? netValue { get; set; }
+
+    [Parameter]
+    public Action? onUpdate { get; set; }
+
+    // For displaying correct number of 0's in decimal
+    private static int numDecimals = NumberFormatInfo.CurrentInfo.CurrencyDecimalDigits;
+    private static Double pointOne = Math.Pow(10, -numDecimals);
+    private static Decimal zero = new Decimal(pointOne) * Decimal.Zero;
+
+    private Decimal inputValue = zero; // Displays 0.00
+
+    private PriceValidator priceValidator = new PriceValidator();
+
+    private String errorMessage = String.Empty;
+
+    private void FormSubmitted(EditContext context)
+    {
+        ValidateAndUpdateValue();
+    }
+
+    private void ValidateAndUpdateValue()
+    {
+        if (netValue == null) { return; }
+
+        errorMessage = String.Empty;
+
+        Double testValue = Math.Round((Double)inputValue, numDecimals);
+
+        if (priceValidator.isValid(testValue))
+        {
+            netValue.value = testValue;
+            inputValue = zero + (Decimal)testValue; // Adds 0's to decimal
+
+            if (onUpdate != null)
+            {
+                onUpdate.Invoke();
+            }
+        }
+        else
+        {
+            errorMessage = priceValidator.errorMessage;
+        }
+    }
+}

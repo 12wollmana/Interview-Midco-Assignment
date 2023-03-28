@@ -1,9 +1,9 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 25.0.1705.2
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MidcoNetWorth", "MidcoNetWorth\MidcoNetWorth.csproj", "{599281F2-44E7-4468-A446-D19988F221A8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetWorth", "NetWorth\NetWorth.csproj", "{599281F2-44E7-4468-A446-D19988F221A8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -8,10 +8,10 @@
 
   <ItemGroup>
     <None Remove="Data\" />
-    <None Remove="Errors\" />
+    <None Remove="Validation\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Data\" />
-    <Folder Include="Errors\" />
+    <Folder Include="Validation\" />
   </ItemGroup>
 </Project>

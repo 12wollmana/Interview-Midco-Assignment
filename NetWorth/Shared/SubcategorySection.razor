@@ -1,0 +1,39 @@
+﻿@using Data
+
+@if (subcategory != null)
+{
+    <div class="card-body">
+        <h6 class="card-title">@subcategory.title</h6>
+        <ul class="list-group list-group-flush">
+            @foreach (NetWorthValue value in @subcategory.values)
+            {
+                <li class="list-group-item">
+                    <ValueInput netValue=@value onUpdate=@onValueUpdated />
+                </li>
+            }
+        </ul>
+    </div>
+}
+else
+{
+    <div class="alert alert-danger" role="alert">
+        A subcategory has not been defined!
+    </div>
+}
+
+@code {
+    [Parameter, EditorRequired]
+    public NetWorthSubcategory? subcategory { get; set; }
+
+    [Parameter]
+    public Action? onUpdate { get; set; }
+
+    private void onValueUpdated()
+    {
+        if (onUpdate != null)
+        {
+            onUpdate.Invoke();
+        }
+    }
+}
+
