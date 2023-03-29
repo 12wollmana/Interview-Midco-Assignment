@@ -4,7 +4,8 @@
 <PageTitle>Net Worth Calculator</PageTitle>
 
 
-<nav class="navbar navbar-light sticky-top px-6 mb-2" style="background-color: #e3f2fd;">
+<nav class="navbar navbar-light sticky-top px-6 mb-2"
+     style="background-color: #e3f2fd;">
     <div class="container">
         <span class="navbar-brand mb-0 h1">Net Worth Calculator</span>
         <span class="navbar-text text-wrap text-break">
@@ -16,10 +17,16 @@
 <div class="container">
     <div class="row">
         <div class="col-12 col-lg-6">
-            <CategorySection category=@model.assets onUpdate=@updateNetWorth />
+            <CategorySection category=@model.assets
+                             onUpdate=@updateNetWorth
+                             formatter=@model.formatter
+                             validator=@model.validator />
         </div>
         <div class="col-12 col-lg-6">
-            <CategorySection category=@model.liabilities onUpdate="@updateNetWorth" />
+            <CategorySection category=@model.liabilities
+                             onUpdate="@updateNetWorth"
+                             formatter=@model.formatter
+                             validator=@model.validator />
         </div>
     </div>
 </div>

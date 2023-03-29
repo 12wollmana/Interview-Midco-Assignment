@@ -5,6 +5,13 @@ namespace NetWorth.Model
 {
     public static class NetWorthLiabilities
     {
+        /// <summary>
+        /// Creates the liabilities category.
+        /// </summary>
+        /// <returns>
+        /// A NetWorthCategory instance that represents
+        /// the liabilities data for the Net Worth Calculator.
+        /// </returns>
         public static NetWorthCategory createLiabilities()
         {
             return new NetWorthCategory(

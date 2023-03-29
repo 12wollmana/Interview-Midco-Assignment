@@ -1,11 +1,26 @@
 ﻿using System;
+using NetWorth.Interfaces;
+
 namespace NetWorth.Data
 {
-    public class NetWorthCategory
+    /// <summary>
+    /// This class is used to hold categories for the
+    /// Net Worth Calculator, such as assets and liabilities.
+    /// </summary>
+    public class NetWorthCategory: ICategory<Double>
     {
         public String title { get; }
-        public IEnumerable<NetWorthSubcategory> subcategories { get; }
+        public IEnumerable<ISubcategory<Double>> subcategories { get; }
 
+        /// <summary>
+        /// Creates an instance of NetWorthCategory.
+        /// </summary>
+        /// <param name="title">
+        /// See <see cref="title"/>.
+        /// </param>
+        /// <param name="subcategories">
+        /// See <see cref="subcategories"/>
+        /// </param>
         public NetWorthCategory(String title,
             IEnumerable<NetWorthSubcategory> subcategories)
         {

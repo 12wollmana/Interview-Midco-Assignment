@@ -1,13 +1,15 @@
-﻿@using Data
+﻿@using Interfaces
 
 @if (category != null)
 {
     <div class="card mb-2">
         <div class="card-header">@category.title</div>
-        @foreach (NetWorthSubcategory sub in category.subcategories)
+        @foreach (ISubcategory<Double> sub in category.subcategories)
         {
             <SubcategorySection subcategory=@sub
-                                onUpdate=@onSubcategoryUpdated />
+                                onUpdate=@onSubcategoryUpdated
+                                formatter=@formatter
+                                validator=@validator />
         }
         <div class="card-footer text-end">Total: @totalValue</div>
     </div>
@@ -20,8 +22,24 @@ else
 }
 
 @code {
+
+    /// <summary>
+    /// The category to generate the section for.
+    /// </summary>
     [Parameter]
-    public NetWorthCategory? category { get; set; }
+    public ICategory<Double>? category { get; set; }
+
+    /// <summary>
+    /// The validator for inputs within the section.
+    /// </summary>
+    [Parameter]
+    public IValidator<Double>? validator { get; set; }
+
+    /// <summary>
+    /// The formatter for inputs within the section.
+    /// </summary>
+    [Parameter]
+    public IFormatter<Double, Decimal>? formatter { get; set; }
 
     private String? totalValue { get; set; }
 
@@ -38,6 +56,9 @@ else
         StateHasChanged();
     }
 
+    /// <summary>
+    /// Method to call when inputs are valid and updated.
+    /// </summary>
     [Parameter]
     public Action? onUpdate { get; set; }
 

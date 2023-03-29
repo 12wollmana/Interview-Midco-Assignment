@@ -1,14 +1,17 @@
-﻿@using Data
+﻿@using Interfaces;
 
 @if (subcategory != null)
 {
     <div class="card-body">
         <h6 class="card-title">@subcategory.title</h6>
         <ul class="list-group list-group-flush">
-            @foreach (NetWorthValue value in @subcategory.values)
+            @foreach (IValue<Double> value in @subcategory.values)
             {
                 <li class="list-group-item">
-                    <ValueInput netValue=@value onUpdate=@onValueUpdated />
+                    <ValueInput dataValue=@value
+                                onUpdate=@onValueUpdated
+                                formatter=@formatter
+                                validator=@validator />
                 </li>
             }
         </ul>
@@ -22,9 +25,27 @@ else
 }
 
 @code {
+    /// <summary>
+    /// The subcategory to generate the section for.
+    /// </summary>
     [Parameter, EditorRequired]
-    public NetWorthSubcategory? subcategory { get; set; }
+    public ISubcategory<Double>? subcategory { get; set; }
 
+    /// <summary>
+    /// The validator for inputs within the section.
+    /// </summary>
+    [Parameter]
+    public IValidator<Double>? validator { get; set; }
+
+    /// <summary>
+    /// The formatter for inputs within the section.
+    /// </summary>
+    [Parameter]
+    public IFormatter<Double, Decimal>? formatter { get; set; }
+
+    /// <summary>
+    /// Method to call when inputs are valid and updated.
+    /// </summary>
     [Parameter]
     public Action? onUpdate { get; set; }
 

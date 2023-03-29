@@ -18,10 +18,12 @@
   <ItemGroup>
     <None Remove="Data\" />
     <None Remove="Validation\" />
+    <None Remove="Formatting\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Data\" />
     <Folder Include="Validation\" />
+    <Folder Include="Formatting\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NetWorth\NetWorth.csproj" />

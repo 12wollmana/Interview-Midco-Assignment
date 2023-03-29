@@ -1,14 +1,27 @@
 ﻿using System;
+using NetWorth.Interfaces;
+
 namespace NetWorth.Validation
 {
-    public class PriceValidator
+    public class PriceValidator : IValidator<Double>
     {
+        private static class ErrorStrings
+        {
+            public static String belowMin =
+                "Price is below {0:C2}. Please enter a higher value.";
+
+            public static String aboveMax =
+                "Price is above {0:C2}. Please enter a lower value.";
+        }
+
         public Double min { get; }
         public Double max { get; }
 
         public String errorMessage { get; private set; }
 
-        public PriceValidator(Double min = 0, Double max = 10000000000000)
+        public PriceValidator(
+            Double min = 0,
+            Double max = 10000000000000)
         {
             this.min = min;
             this.max = max;
@@ -23,14 +36,14 @@ namespace NetWorth.Validation
             if (price < this.min)
             {
                 errorMessage = string.Format(
-                    "Price is below {0:C2}. Please enter a higher value.",
+                    ErrorStrings.belowMin,
                     min);
                 isValid = false;
             }
             else if (price > this.max)
             {
                 errorMessage = string.Format(
-                    "Price is above {0:C2}. Please enter a lower value.",
+                    ErrorStrings.aboveMax,
                     max);
                 isValid = false;
             }

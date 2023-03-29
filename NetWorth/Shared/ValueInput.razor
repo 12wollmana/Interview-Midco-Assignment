@@ -1,27 +1,30 @@
-﻿@using Data
-@using Validation
-@using System.Globalization
+﻿@using Interfaces
 
-@if (netValue != null)
+@if (dataValue != null)
 {
-    <EditForm Model=@netValue OnSubmit="FormSubmitted">
+    <EditForm EditContext=@editContext
+              OnSubmit=@FormSubmitted>
         <div class="container">
             <div class="row">
                 <div class="col-sm-12 col-md-6">
                     <label class="col-form-label"
                            for=@this.GetHashCode()>
-                        @netValue.title
+                        @title
                     </label>
                 </div>
                 <div class="col-sm-12 col-md-6">
                     <div class="input-group">
-                        <span class="input-group-text">
-                            @NumberFormatInfo.CurrentInfo.CurrencySymbol
-                        </span>
+                        @if (!String.IsNullOrEmpty(prefixUnit))
+                        {
+                            <span class="input-group-text">
+                                @prefixUnit
+                            </span>
+                        }
                         <InputNumber id=@this.GetHashCode()
-                                     class="form-control" aria-label="Amount"
-                                     @bind-Value="inputValue"
-                                     @onblur="ValidateAndUpdateValue" />
+                                     class="form-control"
+                                     aria-label=@title
+                                     @bind-Value=@inputValue
+                                     @onblur=@ValidateAndUpdateValue />
                     </div>
                 </div>
             </div>
@@ -29,7 +32,8 @@
             {
                 <div class="row">
                     <div class="col-12">
-                        <div class="alert alert-danger mt-2" role="alert">
+                        <div class="alert alert-danger mt-2"
+                             role="alert">
                             @errorMessage
                         </div>
                     </div>
@@ -46,22 +50,39 @@ else
 }
 
 @code {
+    /// <summary>
+    /// The data representation for this input.
+    /// </summary>
     [Parameter, EditorRequired]
-    public NetWorthValue? netValue { get; set; }
+    public IValue<Double>? dataValue { get; set; }
 
+    /// <summary>
+    /// Method to call when inputs are valid and updated.
+    /// </summary>
     [Parameter]
     public Action? onUpdate { get; set; }
 
-    // For displaying correct number of 0's in decimal
-    private static int numDecimals = NumberFormatInfo.CurrentInfo.CurrencyDecimalDigits;
-    private static Double pointOne = Math.Pow(10, -numDecimals);
-    private static Decimal zero = new Decimal(pointOne) * Decimal.Zero;
+    /// <summary>
+    /// The validator for the input.
+    /// </summary>
+    [Parameter]
+    public IValidator<Double>? validator { get; set; }
 
-    private Decimal inputValue = zero; // Displays 0.00
+    /// <summary>
+    /// The formatter for the input.
+    /// </summary>
+    [Parameter]
+    public IFormatter<Double, Decimal>? formatter { get; set; }
 
-    private PriceValidator priceValidator = new PriceValidator();
+    private Decimal inputValue { get; set; }
 
     private String errorMessage = String.Empty;
+
+    private String prefixUnit = String.Empty;
+
+    private String title = String.Empty;
+
+    private EditContext? editContext { get; set; }
 
     private void FormSubmitted(EditContext context)
     {
@@ -70,25 +91,69 @@ else
 
     private void ValidateAndUpdateValue()
     {
-        if (netValue == null) { return; }
+        if (dataValue == null) { return; }
 
         errorMessage = String.Empty;
 
-        Double testValue = Math.Round((Double)inputValue, numDecimals);
-
-        if (priceValidator.isValid(testValue))
+        Double testValue = (Double)inputValue;
+        if (formatter != null)
         {
-            netValue.value = testValue;
-            inputValue = zero + (Decimal)testValue; // Adds 0's to decimal
+            testValue = formatter.deformat(inputValue);
+        }
 
-            if (onUpdate != null)
-            {
-                onUpdate.Invoke();
-            }
+        if (validator == null)
+        {
+            UpdateValue(testValue);
+        }
+        else if (validator.isValid(testValue))
+        {
+            UpdateValue(testValue);
         }
         else
         {
-            errorMessage = priceValidator.errorMessage;
+            errorMessage = validator.errorMessage;
+        }
+    }
+
+    private void UpdateValue(Double newValue)
+    {
+        if (dataValue == null) { return; }
+
+        dataValue.value = newValue;
+
+        if (formatter == null)
+        {
+            inputValue = (Decimal)newValue;
+        }
+        else
+        {
+            inputValue = formatter.format(newValue);
+        }
+
+        if (onUpdate != null)
+        {
+            onUpdate.Invoke();
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        if (dataValue != null)
+        {
+            title = dataValue.title;
+            editContext = new EditContext(dataValue);
+        }
+
+        // Set initial input value
+        if (formatter == null)
+        {
+            inputValue = 0;
+        }
+        else
+        {
+            inputValue = formatter.defaultValue;
+            prefixUnit = formatter.prefixUnit;
         }
     }
 }

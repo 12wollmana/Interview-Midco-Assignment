@@ -10,10 +10,14 @@
     <None Remove="Data\" />
     <None Remove="Validation\" />
     <None Remove="Model\" />
+    <None Remove="Interfaces\" />
+    <None Remove="Formatting\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Data\" />
     <Folder Include="Validation\" />
     <Folder Include="Model\" />
+    <Folder Include="Interfaces\" />
+    <Folder Include="Formatting\" />
   </ItemGroup>
 </Project>

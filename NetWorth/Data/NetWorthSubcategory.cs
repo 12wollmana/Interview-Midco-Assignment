@@ -1,10 +1,12 @@
 ﻿using System;
+using NetWorth.Interfaces;
+
 namespace NetWorth.Data
 {
-    public class NetWorthSubcategory
+    public class NetWorthSubcategory: ISubcategory<Double>
     {
         public String title { get; }
-        public IEnumerable<NetWorthValue> values;
+        public IEnumerable<IValue<Double>> values { get; }
 
         public NetWorthSubcategory(
             String title,

@@ -5,6 +5,13 @@ namespace NetWorth.Model
 {
     public static class NetWorthAssets
     {
+        /// <summary>
+        /// Creates the assets category.
+        /// </summary>
+        /// <returns>
+        /// A NetWorthCategory instance that represents
+        /// the assets data for the Net Worth Calculator.
+        /// </returns>
         public static NetWorthCategory createAssets()
         {
             return new NetWorthCategory(
@@ -13,7 +20,8 @@ namespace NetWorth.Model
             );
         }
 
-        private static IEnumerable<NetWorthSubcategory> createAssetCategories()
+        private static IEnumerable<NetWorthSubcategory>
+            createAssetCategories()
         {
             return new List<NetWorthSubcategory> {
                 createCashAssets()
@@ -28,7 +36,8 @@ namespace NetWorth.Model
             );
         }
 
-        private static IEnumerable<NetWorthValue> createCashAssetValues()
+        private static IEnumerable<NetWorthValue>
+            createCashAssetValues()
         {
             return new List<NetWorthValue>
             {
