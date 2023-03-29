@@ -1,5 +1,7 @@
 # Net Worth Calculator
 
+This application is a web appliation to calculate a person's net worth. See "SD Coding Assignment.docx" for more information on the requirements of this application.
+
 ## Requirements
 To run this application, you'll need:
 <ul>
